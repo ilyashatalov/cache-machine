@@ -45,3 +45,18 @@ exports.getKey = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+
+exports.postKey = async (req, res) => {
+  const entry = new Entry({
+    key: req.body.key,
+    value: req.body.value,
+  });
+  updateOrPopAddEntry(entry.key, entry.value, (err, result) => {
+    if (err) {
+      logger.error(err);
+      return res.status(400).json(err);
+    }
+    return res.status(201).json(result);
+  });
+};

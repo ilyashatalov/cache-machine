@@ -10,6 +10,8 @@ const router = express.Router();
 
 router.get("/keys", cacheController.getCache);
 
+router.post("/keys", cacheController.postKey);
+
 router.get("/keys/:keyId", cacheController.getKey);
 
 module.exports = router;
