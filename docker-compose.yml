@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo:6.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: fashiontest
+      MONGO_INITDB_ROOT_PASSWORD: Omio0raiOmio0rai
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "mongodb://fashiontest:Omio0raiOmio0rai@127.0.0.1/admin?authSource=admin",
+          "--eval=exit"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://fashiontest:Omio0raiOmio0rai@mongo:27017/
+    depends_on:
+      mongo:
+        condition: service_healthy
