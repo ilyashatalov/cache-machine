@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 const Entry = require(path.join(process.cwd(), "models", "entry"));
+const cacheRouter = require(path.join(process.cwd(), "routes", "cache"));
 
 require("dotenv").config();
 const mongoString = process.env.DATABASE_URL;
@@ -15,6 +16,8 @@ app.use(
   })
 );
 app.use(bodyParser.json()); // to support JSON-encoded bodies
+
+app.use(cacheRouter);
 
 mongoose
   .set("strictQuery", false)
