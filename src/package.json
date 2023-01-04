@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "cross-env DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@127.0.0.1/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
+    "test": "cross-env DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
   },
   "author": "Ilya Shatalov",
   "license": "MIT",
