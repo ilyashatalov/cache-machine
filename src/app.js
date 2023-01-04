@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
+
+const logger = require(path.join(process.cwd(), "utils", "logger"));
 const Entry = require(path.join(process.cwd(), "models", "entry"));
 const cacheRouter = require(path.join(process.cwd(), "routes", "cache"));
 
@@ -40,11 +42,11 @@ mongoose
     });
 
     app.listen(3000, () => {
-      console.log(`Server Started at ${3000}`);
+      logger.info(`Server Started at ${3000}`);
     });
   })
   .catch((err) => {
-    console.log(err);
+    logger.fatal(err);
   });
 
 module.exports = app
