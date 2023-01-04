@@ -19,8 +19,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    ports:
-      - 27017:27017
+  #  ports:
+  #    - 27017:27017
 
   mongo-express:
     image: mongo-express
