@@ -46,7 +46,6 @@ exports.getKey = async (req, res) => {
   }
 };
 
-
 exports.postKey = async (req, res) => {
   const entry = new Entry({
     key: req.body.key,
@@ -59,4 +58,31 @@ exports.postKey = async (req, res) => {
     }
     return res.status(201).json(result);
   });
+};
+
+exports.deleteKey = async (req, res) => {
+  // Get key from GET URL
+  const key = req.params.keyId;
+  try {
+    const entry = await Entry.findOneAndDelete({ key: key });
+    if (!entry) {
+      return res.status(404).json({});
+    }
+    return res.status(200).json(entry);
+  } catch (err) {
+    logger.error(err, err.stack);
+    return res.status(500).json(err);
+  }
+};
+
+exports.deleteKeys = async (req, res) => {
+  // Get key from GET URL
+  const key = req.params.keyId;
+  try {
+    const entry = await Entry.deleteMany({});
+    return res.status(200).json(entry);
+  } catch (err) {
+    logger.error(err, err.stack);
+    return res.status(500).json(err);
+  }
 };
