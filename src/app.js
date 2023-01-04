@@ -40,10 +40,11 @@ mongoose
         }
       }
     });
-
-    app.listen(3000, () => {
-      logger.info(`Server Started at ${3000}`);
-    });
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(3000, () => {
+        logger.info(`Server Started at ${3000}`);
+      });
+    }
   })
   .catch((err) => {
     logger.fatal(err);
