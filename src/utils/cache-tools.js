@@ -36,13 +36,12 @@ async function updateOrPopAddEntry(key, value, callback) {
     }
 
     await checkAndPop();
-
-    const newEntry = new Entry({
+    const newEntrystruct = {
       key,
       value,
-    });
-    await newEntry.save();
-    return callback(null, newEntry);
+    }
+    await new Entry(newEntrystruct).save();
+    return callback(null, newEntrystruct);
   } catch (err) {
     logger.error(err, err.stack);
     return callback(err, null);
