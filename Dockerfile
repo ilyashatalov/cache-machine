@@ -1,4 +1,4 @@
-FROM node:19
+FROM node:19.3
 
 WORKDIR /cache-machine
 COPY src/ /cache-machine/

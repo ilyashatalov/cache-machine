@@ -6,11 +6,19 @@ FC coding challenge
 * docker engine (https://docs.docker.com/engine/install/)
 * docker-compose (https://docs.docker.com/compose/install/)
 
-To start application you need to run docker-compose in root application folder (outside of src):
+To start an application you need only to run docker-compose in root application folder (outside of src):
 ```bash
 docker-compose up -d
 ```
-There are 3 containers (application, mongodb, mongo-express). Application will work on 3000 port that binded to host 80 port.
+
+There are 3 containers (application, mongodb, mongo-express). The application will work on 3000 port that binded to host 80 port. If you need to make some configuration of the app (TTL time, max cahce items) you can change in docker-compose.yml. Defualt variables are:
+```yml
+RANDOM_STRING_LENGTH=14
+CACHE_MAX_COUNT=5
+KEY_TTL=3600
+LOG_LEVEL=info
+```
+
 Try to curl our application (there will be one test item):
 ```bash
 curl localhost/keys
@@ -63,10 +71,10 @@ Ran all test suites.
 ## Without docker 
 All source code is available in src folder.
 ### Requirements
-1) nodeJS 19.0.3
+1) nodeJS 19.3.0
 2) MongoDB 6.0
 
-You need to configure application to use your Mongo DB installation.
+You need to configure the application to use your Mongo DB installation.
 1) Edit env file parameter DATABASE_URL (and other if you need)
 2) Rename it to .env
     ```bash
