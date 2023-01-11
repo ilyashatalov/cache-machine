@@ -1,4 +1,3 @@
-import * as path from "path";
 import * as dotenv from "dotenv";
 
 // Default Values
@@ -65,7 +64,9 @@ const getConfig = (): ENV => {
 const getSanitzedConfig = (config: ENV): Config => {
   for (const [key, value] of Object.entries(config)) {
     if (value === undefined) {
-      throw new Error(`Missing key ${key} in .env file or OS ENVIRONMENT variable`);
+      throw new Error(
+        `Missing key ${key} in .env file or OS ENVIRONMENT variable`
+      );
     }
   }
   return config as Config;
