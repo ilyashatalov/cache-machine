@@ -11,6 +11,7 @@ import config from "../utils/config";
  * Test keys limit
  */
 
+/* We will use this Entry for each test */
 const testEntry = {
   key: "Jest99",
   value: "Jest test value 99",
@@ -21,15 +22,14 @@ beforeEach(async () => {
   await mongoose.connect(config.DATABASE_URL);
 });
 
-/* Closing database connection after each test. */
+/* Clear Database and close database connection after each test. */
 afterEach(async () => {
   await Entry.deleteMany({});
   await mongoose.connection.close();
 });
 
 describe("POST /keys", () => {
-  it("should add some data to app", async () => {
-    await new Entry(testEntry).save();
+  it("should add testEntry to app", async () => {
     const res = await request(app).post("/keys").send(testEntry);
     expect(res.statusCode).toBe(201);
     expect(res.body.key).toBe(testEntry.key);
@@ -37,14 +37,15 @@ describe("POST /keys", () => {
   });
 });
 
+/* Take care about logic described in cache-tools.ts updateOrPopAddEntry method */
 describe("GET /keys/<Entry.key>", () => {
-  it("should create and return one entry", async () => {
+  it("should create and return testEntry", async () => {
     const res = await request(app).get("/keys/" + testEntry.key);
     expect(res.statusCode).toBe(201);
     expect(res.body.key).toBe(testEntry.key);
     const res2 = await request(app).get("/keys/" + testEntry.key);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.key).toBe(testEntry.key);
+    expect(res2.statusCode).toBe(201);
+    expect(res2.body.key).toBe(testEntry.key);
   });
 });
 
@@ -55,7 +56,7 @@ describe("GET /keys", () => {
     expect(res.body.length).toEqual(0);
     await new Entry(testEntry).save();
     const res2 = await request(app).get("/keys");
-    expect(res.statusCode).toBe(200);
+    expect(res2.statusCode).toBe(200);
   });
 });
 
