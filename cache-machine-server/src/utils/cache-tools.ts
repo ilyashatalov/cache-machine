@@ -1,8 +1,7 @@
 import logger from "../utils/logger";
 import Entry from "../models/entry";
 
-require("dotenv").config();
-const CACHE_MAX_COUNT = parseInt(process.env.CACHE_MAX_COUNT);
+import config from "./config";
 
 /**
  * Takes key and value and trying to update value of @key
@@ -10,10 +9,9 @@ const CACHE_MAX_COUNT = parseInt(process.env.CACHE_MAX_COUNT);
  * then CACHE_MAX_COUNT (check it in .env file) deletes
  * last updated item
  */
-
 async function checkAndPop() {
   const count = await Entry.count();
-  if (count >= CACHE_MAX_COUNT) {
+  if (count >= config.CACHE_MAX_COUNT) {
     logger.debug("There're more then + CACHE_MAX_COUNT");
     const entry = await Entry.findOneAndDelete(
       {},
@@ -23,26 +21,29 @@ async function checkAndPop() {
   }
 }
 
-async function updateOrPopAddEntry(key, value, callback) {
+async function updateOrPopAddEntry(
+  key: string,
+  value: string,
+): Promise<Object> {
   const filter = { key: key };
   const update = { value: value, updatedAt: new Date() };
   const opts = { new: true };
   try {
     const result = await Entry.findOneAndUpdate(filter, update, opts);
     if (result) {
-      return callback(null, result);
+      return result.toObject();
     }
 
     await checkAndPop();
-    const newEntrystruct = {
+    const newEntryStruct = {
       key,
       value,
-    }
-    await new Entry(newEntrystruct).save();
-    return callback(null, newEntrystruct);
+    };
+    const newEntry = await new Entry(newEntryStruct).save();
+    return newEntry.toObject();
   } catch (err) {
     logger.error(err, err.stack);
-    return callback(err, null);
+    throw new Error('Something went wrong');
   }
 }
 

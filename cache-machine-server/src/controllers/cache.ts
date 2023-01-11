@@ -1,13 +1,12 @@
 import * as randomstring from "randomstring";
+import { Request, Response } from "express";
 
 import logger from "../utils/logger";
 import Entry from "../models/entry";
 import updateOrPopAddEntry from "../utils/cache-tools";
+import config from "../utils/config";
 
-require("dotenv").config();
-const RANDOM_STRING_LENGTH = parseInt(process.env.RANDOM_STRING_LENGTH);
-
-export async function getCache (req, res) {
+export async function getCache(req: Request, res: Response) {
   Entry.find((err, result) => {
     if (err) {
       logger.error(err);
@@ -15,48 +14,41 @@ export async function getCache (req, res) {
     }
     return res.status(200).send(result);
   });
-};
+}
 
-export async function getKey (req, res) {
+export async function getKey(req: Request, res: Response) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {
     const entry = await Entry.findOne({ key });
     if (entry) {
       logger.info("Cache hit");
-      return res.status(200).json(entry);
+      return res.status(200).json(entry.toObject());
     }
     logger.info("Cache miss");
     // Generate random string for new value
-    const rndStr = randomstring.generate(RANDOM_STRING_LENGTH);
-    updateOrPopAddEntry(key, rndStr, (err, result) => {
-      if (err) {
-        logger.error(err);
-        return res.status(400).json(err);
-      }
-      return res.status(201).json(result);
-    });
+    const result = await updateOrPopAddEntry(
+      key,
+      randomstring.generate(config.RANDOM_STRING_LENGTH)
+    );
+    return res.status(201).json(result);
   } catch (err) {
     logger.error(err, err.stack);
     return res.status(500).json(err);
   }
-};
+}
 
-export async function postKey (req, res) {
-  const entry = new Entry({
-    key: req.body.key,
-    value: req.body.value,
-  });
-  updateOrPopAddEntry(entry.key, entry.value, (err, result) => {
-    if (err) {
-      logger.error(err);
-      return res.status(400).json(err);
-    }
+export async function postKey(req: Request, res: Response) {
+  try {
+    const result = await updateOrPopAddEntry(req.body.key, req.body.value);
     return res.status(201).json(result);
-  });
-};
+  } catch (err) {
+    logger.error(err, err.stack);
+    return res.status(500).json(err);
+  }
+}
 
-export async function deleteKey (req, res) {
+export async function deleteKey(req: Request, res: Response) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {
@@ -69,9 +61,9 @@ export async function deleteKey (req, res) {
     logger.error(err, err.stack);
     return res.status(500).json(err);
   }
-};
+}
 
-export async function deleteKeys(req, res) {
+export async function deleteKeys(req: Request, res: Response) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {
@@ -81,4 +73,4 @@ export async function deleteKeys(req, res) {
     logger.error(err, err.stack);
     return res.status(500).json(err);
   }
-};
+}
