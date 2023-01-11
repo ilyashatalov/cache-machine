@@ -33,7 +33,10 @@ export async function getKey(req: Request, res: Response) {
     );
     return res.status(201).json(result);
   } catch (err) {
-    logger.error(err, err.stack);
+    logger.error(err);
+    if (err instanceof Error) {
+      logger.error(err.name, err.message, err.stack);
+    }
     return res.status(500).json(err);
   }
 }
@@ -43,7 +46,10 @@ export async function postKey(req: Request, res: Response) {
     const result = await updateOrPopAddEntry(req.body.key, req.body.value);
     return res.status(201).json(result);
   } catch (err) {
-    logger.error(err, err.stack);
+    logger.error(err);
+    if (err instanceof Error) {
+      logger.error(err.name, err.message, err.stack);
+    }
     return res.status(500).json(err);
   }
 }
@@ -58,19 +64,23 @@ export async function deleteKey(req: Request, res: Response) {
     }
     return res.status(200).json(entry);
   } catch (err) {
-    logger.error(err, err.stack);
+    logger.error(err);
+    if (err instanceof Error) {
+      logger.error(err.name, err.message, err.stack);
+    }
     return res.status(500).json(err);
   }
 }
 
 export async function deleteKeys(req: Request, res: Response) {
-  // Get key from GET URL
-  const key = req.params.keyId;
   try {
     const entry = await Entry.deleteMany({});
     return res.status(200).json(entry);
   } catch (err) {
-    logger.error(err, err.stack);
+    logger.error(err);
+    if (err instanceof Error) {
+      logger.error(err.name, err.message, err.stack);
+    }
     return res.status(500).json(err);
   }
 }
