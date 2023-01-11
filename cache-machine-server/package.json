@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc --w",
     "start": "tsc && ts-node ./dist/app.js",
-    "dev": "nodemon app.js",
-    "test": "cross-env DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@127.0.0.1/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
+    "dev": "nodemon src/app.ts",
+    "test": "tsc && cross-env LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
   },
   "author": "Ilya Shatalov",
   "license": "MIT",
