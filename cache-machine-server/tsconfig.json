@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "@app": ["./"],
-      "@app/*": ["./*"]
-    },
+    "baseUrl": "<rootDir>/src",
     "outDir": "dist",
     "moduleResolution": "node",
     "module": "CommonJS",
-    "allowJs": true,
     "target": "ES6",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "allowJs": false,
+    "strict": true
   }
 }
