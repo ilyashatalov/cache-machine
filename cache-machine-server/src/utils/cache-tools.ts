@@ -1,10 +1,8 @@
-const path = require("path");
-
-const logger = require(path.join(process.cwd(), "utils", "logger"));
-const Entry = require(path.join(process.cwd(), "models", "entry"));
+import logger from "../utils/logger";
+import Entry from "../models/entry";
 
 require("dotenv").config();
-const CACHE_MAX_COUNT = process.env.CACHE_MAX_COUNT;
+const CACHE_MAX_COUNT = parseInt(process.env.CACHE_MAX_COUNT);
 
 /**
  * Takes key and value and trying to update value of @key
@@ -30,7 +28,7 @@ async function updateOrPopAddEntry(key, value, callback) {
   const update = { value: value, updatedAt: new Date() };
   const opts = { new: true };
   try {
-    result = await Entry.findOneAndUpdate(filter, update, opts);
+    const result = await Entry.findOneAndUpdate(filter, update, opts);
     if (result) {
       return callback(null, result);
     }
@@ -48,4 +46,4 @@ async function updateOrPopAddEntry(key, value, callback) {
   }
 }
 
-module.exports = updateOrPopAddEntry;
+export default updateOrPopAddEntry;

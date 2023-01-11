@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-const request = require("supertest");
-const app = require("../app");
-const mongoString = process.env.DATABASE_URL;
-const Entry = require("../models/entry");
-const randomstring = require("randomstring");
+import * as mongoose from "mongoose";
+import * as request from "supertest";
+import {app} from "../app";
+import Entry from "../models/entry";
+import * as randomstring from "randomstring";
 
+const mongoString = process.env.DATABASE_URL;
 
 /**
  * TODO:
@@ -75,7 +75,7 @@ describe("DELETE /keys/<Entry.key>", () => {
 
 describe("GET /keys/<Entry.key>", () => {
   it("will create new key with 201", async () => {
-    randomKey = randomstring.generate();
+    const randomKey = randomstring.generate();
     const res = await request(app).get("/keys/" + randomKey);
     expect(res.statusCode).toBe(201);
     expect(res.body.key).toBe(randomKey);

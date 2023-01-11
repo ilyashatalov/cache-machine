@@ -1,16 +1,18 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const path = require("path");
+import * as express from "express";
+import * as mongoose from "mongoose";
+import * as bodyParser from "body-parser";
+import * as path from "path";
 
-const logger = require(path.join(process.cwd(), "utils", "logger"));
-const Entry = require(path.join(process.cwd(), "models", "entry"));
-const cacheRouter = require(path.join(process.cwd(), "routes", "cache"));
+import logger from "./utils/logger";
+import Entry from "./models/entry";
+import cacheRouter from "./routes/cache";
 
-require("dotenv").config();
-const mongoString = process.env.DATABASE_URL;
+(async function() {
+  await import("dotenv/config")
+})()
 
-const app = express();
+
+export const app = express();
 app.use(
   bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -23,7 +25,7 @@ app.use(cacheRouter);
 
 mongoose
   .set("strictQuery", false)
-  .connect(mongoString)
+  .connect(process.env.DATABASE_URL)
   .then(() => {
     // Create first test doc
     var query = {},
@@ -40,14 +42,14 @@ mongoose
         }
       }
     });
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       app.listen(3000, () => {
         logger.info(`Server Started at ${3000}`);
       });
     }
   })
   .catch((err) => {
-    logger.fatal(err);
+    logger.info('here')
+    logger.info(err.stack);
   });
 
-module.exports = app

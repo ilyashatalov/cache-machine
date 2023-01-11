@@ -1,17 +1,13 @@
-const path = require("path");
-const randomstring = require("randomstring");
+import * as randomstring from "randomstring";
 
-const logger = require(path.join(process.cwd(), "utils", "logger"));
-const Entry = require(path.join(process.cwd(), "models", "entry"));
-const updateOrPopAddEntry = require(path.join(
-  process.cwd(),
-  "utils",
-  "cache-tools"
-));
+import logger from "../utils/logger";
+import Entry from "../models/entry";
+import updateOrPopAddEntry from "../utils/cache-tools";
+
 require("dotenv").config();
-const RANDOM_STRING_LENGTH = process.env.RANDOM_STRING_LENGTH;
+const RANDOM_STRING_LENGTH = parseInt(process.env.RANDOM_STRING_LENGTH);
 
-exports.getCache = async (req, res) => {
+export async function getCache (req, res) {
   Entry.find((err, result) => {
     if (err) {
       logger.error(err);
@@ -21,7 +17,7 @@ exports.getCache = async (req, res) => {
   });
 };
 
-exports.getKey = async (req, res) => {
+export async function getKey (req, res) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {
@@ -46,7 +42,7 @@ exports.getKey = async (req, res) => {
   }
 };
 
-exports.postKey = async (req, res) => {
+export async function postKey (req, res) {
   const entry = new Entry({
     key: req.body.key,
     value: req.body.value,
@@ -60,7 +56,7 @@ exports.postKey = async (req, res) => {
   });
 };
 
-exports.deleteKey = async (req, res) => {
+export async function deleteKey (req, res) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {
@@ -75,7 +71,7 @@ exports.deleteKey = async (req, res) => {
   }
 };
 
-exports.deleteKeys = async (req, res) => {
+export async function deleteKeys(req, res) {
   // Get key from GET URL
   const key = req.params.keyId;
   try {

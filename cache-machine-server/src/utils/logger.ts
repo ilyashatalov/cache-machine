@@ -1,4 +1,5 @@
-const { createLogger, transports } = require("winston");
+import { createLogger, transports } from "winston";
+
 require("dotenv").config();
 const logLevel = process.env.LOG_LEVEL;
 
@@ -17,4 +18,4 @@ const logger = createLogger({
   transports: [new transports.Console()],
 });
 
-module.exports = logger;
+export default logger;

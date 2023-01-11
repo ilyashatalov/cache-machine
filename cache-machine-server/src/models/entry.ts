@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import * as mongoose from "mongoose";
 require("dotenv").config();
 
 const KEY_TTL = parseInt(process.env.KEY_TTL);
 
-var entrySchema = mongoose.Schema({
+var entrySchema = new mongoose.Schema({
   key: {
     type: String,
     required: true,
@@ -22,4 +22,4 @@ var entrySchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Entry", entrySchema);
+export default mongoose.model("Entry", entrySchema);
