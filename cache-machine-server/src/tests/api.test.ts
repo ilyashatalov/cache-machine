@@ -1,10 +1,9 @@
 import * as mongoose from "mongoose";
 import * as request from "supertest";
-import {app} from "../app";
+import { app } from "../app";
 import Entry from "../models/entry";
 import * as randomstring from "randomstring";
-
-const mongoString = process.env.DATABASE_URL;
+import config from "../utils/config";
 
 /**
  * TODO:
@@ -12,20 +11,19 @@ const mongoString = process.env.DATABASE_URL;
  * Test keys limit
  */
 
-require("dotenv").config();
 const testEntry = {
   key: "Jest99",
   value: "Jest test value 99",
-}
+};
 
 /* Connecting to the database before each test. */
 beforeEach(async () => {
-  await mongoose.connect(mongoString);
+  await mongoose.connect(config.DATABASE_URL);
 });
 
 /* Closing database connection after each test. */
 afterEach(async () => {
-  await Entry.deleteMany({})
+  await Entry.deleteMany({});
   await mongoose.connection.close();
 });
 
@@ -87,7 +85,7 @@ describe("DELETE /keys", () => {
     const testEntry2 = {
       key: "Jest100",
       value: "Jest test value 100",
-    }
+    };
     await new Entry(testEntry).save();
     await new Entry(testEntry2).save();
     const res = await request(app).delete("/keys");
