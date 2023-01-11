@@ -44,7 +44,7 @@ describe("GET /keys/<Entry.key>", () => {
     expect(res.statusCode).toBe(201);
     expect(res.body.key).toBe(testEntry.key);
     const res2 = await request(app).get("/keys/" + testEntry.key);
-    expect(res2.statusCode).toBe(201);
+    expect(res2.statusCode).toBe(200);
     expect(res2.body.key).toBe(testEntry.key);
   });
 });
