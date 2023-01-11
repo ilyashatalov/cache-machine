@@ -1,7 +1,7 @@
 import { createLogger, transports } from "winston";
 
-require("dotenv").config();
-const logLevel = process.env.LOG_LEVEL;
+import config from "./config";
+const logLevel = config.LOG_LEVEL;
 
 const logLevels = {
   fatal: 0,

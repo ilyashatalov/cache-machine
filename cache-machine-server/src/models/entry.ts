@@ -1,7 +1,5 @@
 import * as mongoose from "mongoose";
-require("dotenv").config();
-
-const KEY_TTL = parseInt(process.env.KEY_TTL);
+import config from "../utils/config";
 
 var entrySchema = new mongoose.Schema({
   key: {
@@ -14,7 +12,7 @@ var entrySchema = new mongoose.Schema({
     required: true,
   },
   updatedAt: {
-    expires: KEY_TTL,
+    expires: config.KEY_TTL,
     type: Date,
     default: () => {
       return new Date();

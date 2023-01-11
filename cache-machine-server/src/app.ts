@@ -1,16 +1,11 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
-import * as path from "path";
 
 import logger from "./utils/logger";
 import Entry from "./models/entry";
 import cacheRouter from "./routes/cache";
-
-(async function() {
-  await import("dotenv/config")
-})()
-
+import config from "./utils/config";
 
 export const app = express();
 app.use(
@@ -25,7 +20,7 @@ app.use(cacheRouter);
 
 mongoose
   .set("strictQuery", false)
-  .connect(process.env.DATABASE_URL)
+  .connect(config.DATABASE_URL)
   .then(() => {
     // Create first test doc
     var query = {},
@@ -43,13 +38,12 @@ mongoose
       }
     });
     if (process.env.NODE_ENV !== "test") {
-      app.listen(3000, () => {
-        logger.info(`Server Started at ${3000}`);
+      app.listen(config.APP_PORT, () => {
+        logger.info(`Server Started at ${config.APP_PORT}`);
       });
     }
   })
   .catch((err) => {
-    logger.info('here')
     logger.info(err.stack);
   });
 
