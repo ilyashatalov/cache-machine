@@ -1,4 +1,4 @@
-import { createLogger, transports } from "winston";
+import { createLogger, transports, format } from "winston";
 
 import config from "./config";
 const logLevel = config.LOG_LEVEL;
@@ -16,6 +16,7 @@ const logger = createLogger({
   levels: logLevels,
   level: logLevel,
   transports: [new transports.Console()],
+  format: format.combine(format.timestamp(), format.json()),
 });
 
 export default logger;
