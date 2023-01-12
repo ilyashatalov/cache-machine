@@ -46,4 +46,3 @@ mongoose
   .catch((err) => {
     logger.info(err.stack);
   });
-

@@ -1,6 +1,6 @@
 import * as express from "express";
 
-import * as cacheController from '../controllers/cache';
+import * as cacheController from "../controllers/cache";
 
 const router = express.Router();
 
