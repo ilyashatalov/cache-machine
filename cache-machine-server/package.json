@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "test": "tsc && DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@localhost/fcdb-test?authSource=admin cross-env LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
+    "test": "tsc && cross-env DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@localhost/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000"
   },
   "author": "Ilya Shatalov",
   "license": "MIT",

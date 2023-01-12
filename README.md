@@ -13,7 +13,7 @@ FC coding challenge
     ```
 2) To start an application you need only to run docker-compose:
     ```bash
-    docker-compose up -d
+    docker-compose up -d mongo app
     ```
 
 There are 3 containers (app, mongodb, mongo-express). The application will work on 3000 port that are binded to host 80 port. If you need to make some configuration of the app (TTL time, max cache items) you can change it in docker-compose.yml. Default variables are:
@@ -32,13 +32,14 @@ LOG_LEVEL=info
     ```json
     [{"_id":"63b59dd0cf59a59e34a4b0f1","__v":0,"key":"Test1","updatedAt":"2023-01-04T15:40:00.825Z","value":"Value1"}]
     ```
-2) Add one entry:
+2) Add one entry nd get HTTP status code:
     ```bash
-    curl -v -X POST localhost/keys -d '{"key": "Key 100", "value": "Value 100"}' -H 'Content-Type: application/json'
+    curl -w "\n%{http_code}\n" -X POST localhost/keys -d '{"key": "Key 100", "value": "Value 100"}' -H 'Content-Type: application/json'
     ```
     Expected output:
     ```json
-    {"key":"Key 100","value":"Value 100","_id":"63bf616fb19f977385f6febb","updatedAt":"2023-01-12T01:25:03.228Z","__v":0}%```
+    {"key":"Key 100","value":"Value 100","_id":"63bf616fb19f977385f6febb","updatedAt":"2023-01-12T01:25:03.228Z","__v":0}%
+    201
     ```
 3) Get unexisting Entry and get HTTP status code:
     ```
@@ -49,7 +50,7 @@ LOG_LEVEL=info
     {"key":"TestUnexist","value":"oHFKMWxf75f1ZK","_id":"63bf6249b19f977385f6fed1","updatedAt":"2023-01-12T01:28:41.404Z","__v":0}
     201
     ```
-4) Get the unexisting Entry:
+4) Run the same command to get the existing Entry and check HTTP status code:
     ```
     curl -w "\n%{http_code}\n" localhost/keys/TestUnexist
     ```
@@ -83,21 +84,25 @@ LOG_LEVEL=info
 2) MongoDB 6.0 or Docker and docker-compose from the previous section
 
 You need to configure the application to use your Mongo DB installation or you can use docker-compose included in this project.
-* Install docker and docker-compose:
+1) Install docker and docker-compose:
      * docker engine (https://docs.docker.com/engine/install/)
      * docker compose (https://docs.docker.com/compose/install/)
   
-  And start mongo and mongo express:
-  ```bash
-  docker-compose up -d mongo mongo-express
-  ```
-  It will start MongoDB 6 on your machine and map 27017 port (default for MongoDB) from the container to your host
+2) Clone repo
+    ```
+    git clone https://github.com/ilyashatalov/cache-machine.git && cd cache-machine 
+    ```
+3) And start mongo and mongo express:
+    ```bash
+    docker-compose up -d mongo mongo-express
+    ```
+It will start MongoDB 6.0 on your machine and map 27017 port (default for MongoDB) from the container to your host and mongo express on port 8081
 
 
 * Or use MongoDB installation guide: https://www.mongodb.com/docs/manual/installation/
 
 
-1) Clone repo
+1) Clone repo (if you skip it above)
     ```
     git clone https://github.com/ilyashatalov/cache-machine.git && cd cache-machine 
     ```
