@@ -33,16 +33,18 @@ services:
       mongo:
         condition: service_healthy
 
-#  fc-app:
-#    build: .
-#    ports:
-#      - 80:3000
-#    depends_on:
-#      mongo:
-#        condition: service_healthy
-#    environment:
-#      - DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb?authSource=admin
-#      - RANDOM_STRING_LENGTH=14
-#      - CACHE_MAX_COUNT=5
-#      - KEY_TTL=3600
-#      - LOG_LEVEL=info
+  app:
+    build:
+      context: .
+    ports:
+      - 80:3000
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb?authSource=admin # DO NOT CHANGE
+      - APP_PORT=3000 # DO NOT CHANGE
+      - RANDOM_STRING_LENGTH=14
+      - CACHE_MAX_COUNT=5
+      - KEY_TTL=3600
+      - LOG_LEVEL=info

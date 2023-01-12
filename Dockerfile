@@ -1,10 +1,28 @@
-FROM node:19.3
+FROM node:19.3 as builder
 
-WORKDIR /cache-machine
-COPY src/ /cache-machine/
+# Create app directory
+WORKDIR /usr/src/app
 
-RUN npm i
+# Install app dependencies
+COPY cache-machine-server/package*.json ./
+
+RUN npm ci
+
+COPY cache-machine-server/ .
+
+RUN npm run build
+
+FROM node:slim
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY cache-machine-server/package*.json ./
+
+RUN npm ci --only=prod
+
+COPY --from=builder /usr/src/app/dist ./dist
 
 EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD [ "node", "dist/app.js" ]
