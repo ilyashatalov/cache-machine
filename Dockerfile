@@ -20,7 +20,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY cache-machine-server/package*.json ./
 
-RUN npm ci --only=prod
+RUN npm ci --omit=dev
 
 COPY --from=builder /usr/src/app/dist ./dist
 
