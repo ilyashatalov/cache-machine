@@ -1,6 +1,7 @@
-const { createLogger, transports } = require("winston");
-require("dotenv").config();
-const logLevel = process.env.LOG_LEVEL;
+import { createLogger, transports, format } from "winston";
+
+import config from "./config";
+const logLevel = config.LOG_LEVEL;
 
 const logLevels = {
   fatal: 0,
@@ -15,6 +16,7 @@ const logger = createLogger({
   levels: logLevels,
   level: logLevel,
   transports: [new transports.Console()],
+  format: format.combine(format.timestamp(), format.json()),
 });
 
-module.exports = logger;
+export default logger;

@@ -19,8 +19,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-  #  ports:
-  #    - 27017:27017
+    ports:
+      - 27017:27017
 
   mongo-express:
     image: mongo-express
@@ -33,15 +33,17 @@ services:
       mongo:
         condition: service_healthy
 
-  fc-app:
-    build: .
+  app:
+    build:
+      context: .
     ports:
       - 80:3000
     depends_on:
       mongo:
         condition: service_healthy
     environment:
-      - DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb?authSource=admin
+      - DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb?authSource=admin # DO NOT CHANGE
+      - APP_PORT=3000 # DO NOT CHANGE
       - RANDOM_STRING_LENGTH=14
       - CACHE_MAX_COUNT=5
       - KEY_TTL=3600

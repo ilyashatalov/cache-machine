@@ -1,0 +1,6 @@
+DATABASE_URL = mongodb://<user>:<password>@<host>/<database-name>?authSource=admin
+RANDOM_STRING_LENGTH = 14
+CACHE_MAX_COUNT = 100
+KEY_TTL = 3600
+LOG_LEVEL = 'info'
+APP_PORT = 3000

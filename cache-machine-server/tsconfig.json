@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "<rootDir>/src",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "target": "ES6",
+    "types": ["node", "jest"],
+    "allowJs": false,
+    "strict": true,
+    "sourceMap": true
+  }
+}
