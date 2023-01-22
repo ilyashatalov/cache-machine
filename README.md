@@ -140,28 +140,34 @@ It will start MongoDB 6.0 on your machine and map 27017 port (default for MongoD
     Sample output:
     ```
 
-    > cache-machine@0.0.1 test
-    > cross-env DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@mongo/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000
+    > cache-machine@0.2 test
+    > tsc && cross-env CACHE_MAX_COUNT=10 KEY_TTL=60 DATABASE_URL=mongodb://fashiontest:Omio0raiOmio0rai@localhost/fcdb-test?authSource=admin LOG_LEVEL=debug NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --testTimeout=5000
 
-    {"level":"info","message":"Cache miss"}
-    {"level":"info","message":"Cache hit"}
-    {"level":"info","message":"Cache miss"}
-    PASS  tests/api.test.js
-      POST /keys
-        ✓ should add some data to app (121 ms)
-      GET /keys/<Entry.key>
-        ✓ should create and return one entry (56 ms)
-        ✓ will create new key with 201 (38 ms)
-      GET /keys
-        ✓ should return all entries (45 ms)
-      DELETE /keys/<Entry.key>
-        ✓ should delete one entry (41 ms)
-      DELETE /keys
-        ✓ should delete all entries (37 ms)
+    {"level":"info","message":"Cache hit","timestamp":"2023-01-22T23:51:07.823Z"}
+    {"level":"info","message":"Cache hit","timestamp":"2023-01-22T23:51:07.864Z"}
+    {"level":"debug","message":"There're more then 10 items","timestamp":"2023-01-22T23:51:08.067Z"}
+    {"level":"info","message":"Deleted: {\n  _id: new ObjectId(\"63cdcbeca6beb701291fad66\"),\n  key: 'TestMax1',\n  value: 'n1R3Pl0G5r4QzT4K2OqsQgiEnLoIu3rR',\n  updatedAt: 2023-01-22T23:51:08.029Z,\n  __v: 0\n}","timestamp":"2023-01-22T23:51:08.070Z"}
+    PASS  src/tests/api.test.ts
+    POST /keys
+        ✓ should add testEntry to app (134 ms)
+    GET /keys/<Entry.key>
+        ✓ will create new key with 201 status code (52 ms)
+        ✓ after creation should be 200 status code (52 ms)
+        ✓ should update updatedAt field (40 ms)
+    GET /keys
+        ✓ should return all entries (41 ms)
+    DELETE /keys/<Entry.key>
+        ✓ should delete one entry (44 ms)
+    DELETE /keys
+        ✓ should delete all entries (34 ms)
+    Check TTL
+        ✓ check that the expireAfterSeconds field is set correctly (23 ms)
+    Max entries count
+        ✓ check max entries count and a deletion logic (66 ms)
 
     Test Suites: 1 passed, 1 total
-    Tests:       6 passed, 6 total
+    Tests:       9 passed, 9 total
     Snapshots:   0 total
-    Time:        0.948 s
+    Time:        1.716 s, estimated 2 s
     Ran all test suites.
     ```
