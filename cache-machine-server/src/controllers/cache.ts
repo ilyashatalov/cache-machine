@@ -9,7 +9,6 @@ import {
 } from "../services/cacheService";
 
 export async function getCache(req: Request, res: Response) {
-  console.log("here");
   return res.status(200).send(await getAllEnties());
 }
 
