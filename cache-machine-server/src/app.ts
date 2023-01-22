@@ -20,23 +20,23 @@ app.use(cacheRouter);
 
 mongoose
   .set("strictQuery", false)
-  .connect(config.DATABASE_URL)
+  .connect(config.DATABASE_URL, { serverSelectionTimeoutMS: 3000 })
   .then(() => {
     // Create first test doc
     var query = {},
       update = { key: "Test1", value: "Value1" },
       options = { upsert: true };
 
-    Entry.findOneAndUpdate(query, update, options, function (error, result) {
-      if (!error) {
-        if (!result) {
-          result = new Entry({
-            key: "Test1",
-            value: "Value1",
-          });
-        }
-      }
-    });
+    // Entry.findOneAndUpdate(query, update, options, function (error, result) {
+    //   if (!error) {
+    //     if (!result) {
+    //       result = new Entry({
+    //         key: "Test1",
+    //         value: "Value1",
+    //       });
+    //     }
+    //   }
+    // });
     if (process.env.NODE_ENV !== "test") {
       app.listen(config.APP_PORT, () => {
         logger.info(`Server Started at ${config.APP_PORT}`);
